@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { SiteHeader } from "@/components/SiteHeader";
@@ -19,7 +19,10 @@ function money(cents: number) {
   return `$${(cents / 100).toLocaleString()}`;
 }
 
-export default function InboxPage() {
+// useSearchParams() requires a Suspense boundary at build time (next build
+// enforces this even though next dev doesn't), so the real page content
+// lives in this inner component and the default export below just wraps it.
+function InboxContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const box = searchParams.get("box") === "sent" ? "sent" : "received";
@@ -126,5 +129,13 @@ export default function InboxPage() {
         )}
       </main>
     </div>
+  );
+}
+
+export default function InboxPage() {
+  return (
+    <Suspense fallback={null}>
+      <InboxContent />
+    </Suspense>
   );
 }
