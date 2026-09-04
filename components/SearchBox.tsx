@@ -73,7 +73,7 @@ export default function SearchBox({
       ref={formRef}
       action="/browse"
       method="GET"
-      className="flex-1 max-w-md relative"
+      className="flex-1 min-w-0 max-w-md relative"
       onSubmit={() => remember(value)}
     >
       <div ref={wrapRef} className="relative">

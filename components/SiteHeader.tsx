@@ -83,9 +83,10 @@ export function SiteHeader({ search }: { search?: React.ReactNode }) {
         <AuthButton />
         <Link
           href="/sell"
-          className="bg-[#DD8A3E] text-[#1B1305] font-semibold px-4 py-2 rounded-lg text-sm hover:bg-[#E9974F] transition-colors"
+          className="bg-[#DD8A3E] text-[#1B1305] font-semibold px-3 sm:px-4 py-2 rounded-lg text-sm hover:bg-[#E9974F] transition-colors whitespace-nowrap"
         >
-          Sell a part
+          <span className="hidden sm:inline">Sell a part</span>
+          <span className="sm:hidden">Sell</span>
         </Link>
       </div>
     </header>
