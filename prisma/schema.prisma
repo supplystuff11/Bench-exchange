@@ -1,0 +1,230 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// --- NextAuth standard models ---
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// --- App models ---
+
+model User {
+  id              String    @id @default(cuid())
+  name            String?
+  email           String?   @unique
+  emailVerified   DateTime?
+  image           String?
+
+  // Stripe Connect (Express) account for this user as a seller
+  stripeAccountId   String?  @unique
+  stripeOnboarded   Boolean  @default(false)
+
+  accounts Account[]
+  sessions Session[]
+  listings Listing[]
+  orders   Order[]   @relation("BuyerOrders")
+  offers   Offer[]   @relation("BuyerOffers")
+
+  favorites       Favorite[]
+  notifications   Notification[]
+  reviewsGiven    Review[]       @relation("ReviewsGiven")
+  reviewsReceived Review[]       @relation("ReviewsReceived")
+
+  conversationsAsBuyer  Conversation[] @relation("BuyerConversations")
+  conversationsAsSeller Conversation[] @relation("SellerConversations")
+  messagesSent          Message[]
+  reports               Report[]
+  savedSearches         SavedSearch[]
+}
+
+model Listing {
+  id          String   @id @default(cuid())
+  title       String
+  category    String
+  brand       String   @default("Other")
+  condition   String
+  // price stored in cents to avoid floating point issues
+  priceCents  Int
+  city        String?
+  specs       String?
+  description String   @db.Text
+  status      String   @default("active") // active | pending | sold | removed
+  createdAt   DateTime @default(now())
+  imageUrls   String[] @default([])
+  videoUrls   String[] @default([])
+  // when set and in the future, the listing is boosted to the top of browse
+  featuredUntil DateTime?
+
+  sellerId String
+  seller   User    @relation(fields: [sellerId], references: [id])
+
+  orders        Order[]
+  offers        Offer[]
+  favorites     Favorite[]
+  conversations Conversation[]
+  reports       Report[]
+}
+
+model Offer {
+  id         String   @id @default(cuid())
+  listingId  String
+  listing    Listing  @relation(fields: [listingId], references: [id])
+  buyerId    String
+  buyer      User     @relation("BuyerOffers", fields: [buyerId], references: [id])
+
+  amountCents Int
+  message     String? @db.Text
+  status      String  @default("pending") // pending | accepted | declined
+
+  createdAt DateTime @default(now())
+}
+
+model Order {
+  id                String   @id @default(cuid())
+  listingId         String
+  listing           Listing  @relation(fields: [listingId], references: [id])
+  buyerId           String
+  buyer             User     @relation("BuyerOrders", fields: [buyerId], references: [id])
+
+  amountCents       Int
+  platformFeeCents  Int
+  stripeSessionId   String?  @unique
+  status            String   @default("pending") // pending | paid | released | refunded
+
+  createdAt DateTime @default(now())
+
+  reviews Review[]
+}
+
+model Favorite {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  listingId String
+  listing   Listing  @relation(fields: [listingId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@unique([userId, listingId])
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  // OFFER_RECEIVED | OFFER_ACCEPTED | OFFER_DECLINED | LISTING_SOLD | NEW_REVIEW |
+  // MESSAGE_RECEIVED | SAVED_SEARCH_MATCH | LISTING_FEATURED
+  type      String
+  title     String
+  body      String?
+  link      String?
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model Review {
+  id       String  @id @default(cuid())
+  orderId  String
+  order    Order   @relation(fields: [orderId], references: [id])
+  authorId String
+  author   User    @relation("ReviewsGiven", fields: [authorId], references: [id])
+  targetId String
+  target   User    @relation("ReviewsReceived", fields: [targetId], references: [id])
+  // which role the TARGET played in this order — keeps buying/selling reviews separate
+  role     String // "SELLER" | "BUYER"
+  rating   Int
+  comment  String? @db.Text
+
+  createdAt DateTime @default(now())
+
+  // one review per role per order (buyer reviews seller once, seller reviews buyer once)
+  @@unique([orderId, role])
+}
+
+model Conversation {
+  id        String   @id @default(cuid())
+  listingId String
+  listing   Listing  @relation(fields: [listingId], references: [id])
+  buyerId   String
+  buyer     User     @relation("BuyerConversations", fields: [buyerId], references: [id])
+  sellerId  String
+  seller    User     @relation("SellerConversations", fields: [sellerId], references: [id])
+
+  createdAt DateTime @default(now())
+  messages  Message[]
+
+  // one thread per buyer per listing
+  @@unique([listingId, buyerId])
+}
+
+model Message {
+  id             String       @id @default(cuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id])
+  senderId       String
+  sender         User         @relation(fields: [senderId], references: [id])
+  body           String       @db.Text
+  read           Boolean      @default(false)
+  createdAt      DateTime     @default(now())
+}
+
+model Report {
+  id         String   @id @default(cuid())
+  listingId  String
+  listing    Listing  @relation(fields: [listingId], references: [id])
+  reporterId String
+  reporter   User     @relation(fields: [reporterId], references: [id])
+  reason     String
+  details    String?  @db.Text
+  status     String   @default("open") // open | reviewed | dismissed
+  createdAt  DateTime @default(now())
+}
+
+model SavedSearch {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  // stored as the same query params /browse accepts
+  category  String?
+  brand     String?
+  search    String?
+  minPrice  Int?
+  maxPrice  Int?
+  createdAt DateTime @default(now())
+}
