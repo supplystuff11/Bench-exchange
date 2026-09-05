@@ -21,8 +21,8 @@ export default async function EditListingPage({ params }: { params: { id: string
     <div className="min-h-screen flex flex-col">
       <SiteHeader />
       <main className="flex-1 max-w-lg mx-auto w-full px-5 py-10">
-        <h1 className="text-xl font-bold mb-1.5">Edit listing</h1>
-        <p className="text-sm text-[#736C5F] mb-6">Update the details buyers will see.</p>
+        <h1 className="text-xl font-bold mb-1.5 text-[var(--text-1)]">Edit listing</h1>
+        <p className="text-sm text-[var(--text-4)] mb-6">Update the details buyers will see.</p>
         <EditListingForm listing={listing} />
       </main>
     </div>

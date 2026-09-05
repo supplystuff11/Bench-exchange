@@ -60,7 +60,7 @@ export default async function ListingPage({
       <SiteHeader />
 
       <main className="flex-1 max-w-5xl w-full mx-auto px-5 py-8">
-        <Link href="/browse" className="text-sm text-[#736C5F] hover:text-[#F0EBE1] transition-colors">
+        <Link href="/browse" className="text-sm text-[var(--text-4)] hover:text-[var(--text-1)] transition-colors">
           ← Back to listings
         </Link>
 
@@ -75,29 +75,29 @@ export default async function ListingPage({
 
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-semibold uppercase tracking-wide bg-[#211F1B] border border-[#3A362F] text-[#B8B1A3] px-2.5 py-1 rounded-md">
+                <span className="text-xs font-semibold uppercase tracking-wide bg-[var(--bg-1)] border border-[var(--border)] text-[var(--text-3)] px-2.5 py-1 rounded-md">
                   {listing.condition}
                 </span>
                 {listing.featuredUntil && listing.featuredUntil > new Date() && (
-                  <span className="text-xs font-semibold uppercase tracking-wide bg-[#3A2E12] text-[#DD8A3E] px-2.5 py-1 rounded-md">
+                  <span className="text-xs font-semibold uppercase tracking-wide bg-[var(--gold-soft-bg)] text-[var(--gold-fill)] px-2.5 py-1 rounded-md">
                     Featured
                   </span>
                 )}
-                <span className="text-xs text-[#736C5F]">
+                <span className="text-xs text-[var(--text-4)]">
                   {listing.brand} · {listing.category}
                 </span>
               </div>
               {!isOwner && userId && <FavoriteButton listingId={listing.id} className="text-xl" />}
             </div>
 
-            <h1 className="text-2xl font-bold mb-2">{listing.title}</h1>
+            <h1 className="text-2xl font-bold mb-2 text-[var(--text-1)]">{listing.title}</h1>
             {listing.specs && (
-              <p className="text-sm text-[#B8B1A3] font-mono mb-6">{listing.specs}</p>
+              <p className="text-sm text-[var(--text-3)] font-mono mb-6">{listing.specs}</p>
             )}
 
-            <div className="border-t border-[#2B2822] pt-6">
-              <h2 className="text-sm font-semibold mb-2 text-[#B8B1A3]">Description</h2>
-              <p className="leading-relaxed text-[#D9D3C7] whitespace-pre-line">
+            <div className="border-t border-[var(--bg-2)] pt-6">
+              <h2 className="text-sm font-semibold mb-2 text-[var(--text-3)]">Description</h2>
+              <p className="leading-relaxed text-[var(--text-2)] whitespace-pre-line">
                 {listing.description}
               </p>
             </div>
@@ -105,30 +105,30 @@ export default async function ListingPage({
 
           {/* Right column — sticky purchase panel */}
           <div className="md:sticky md:top-24 h-fit">
-            <div className="bg-[#211F1B] border border-[#3A362F] rounded-xl p-5">
-              <div className="text-3xl font-bold text-[#DD8A3E] mb-1">
+            <div className="bg-[var(--bg-1)] border border-[var(--border)] rounded-xl p-5">
+              <div className="text-3xl font-bold text-[var(--accent-fill)] mb-1">
                 ${(listing.priceCents / 100).toLocaleString()}
               </div>
               {listing.city && (
-                <div className="text-sm text-[#736C5F] mb-5">{listing.city}</div>
+                <div className="text-sm text-[var(--text-4)] mb-5">{listing.city}</div>
               )}
 
               {isOwner ? (
-                <div className="text-sm text-[#736C5F] bg-[#171512] border border-[#3A362F] rounded-lg px-3 py-3 text-center">
+                <div className="text-sm text-[var(--text-4)] bg-[var(--bg-0)] border border-[var(--border)] rounded-lg px-3 py-3 text-center">
                   <p className="mb-2">This is your listing.</p>
                   <Link
                     href={`/listing/${listing.id}/edit`}
-                    className="text-[#DD8A3E] font-semibold hover:text-[#E9974F] transition-colors"
+                    className="text-[var(--accent-fill)] font-semibold hover:text-[var(--accent-hover)] transition-colors"
                   >
                     Edit listing →
                   </Link>
                 </div>
               ) : listing.status === "sold" ? (
-                <p className="text-sm text-[#736C5F] bg-[#171512] border border-[#3A362F] rounded-lg px-3 py-2.5 text-center">
+                <p className="text-sm text-[var(--text-4)] bg-[var(--bg-0)] border border-[var(--border)] rounded-lg px-3 py-2.5 text-center">
                   This listing has sold.
                 </p>
               ) : listing.status === "pending" ? (
-                <p className="text-sm text-[#736C5F] bg-[#171512] border border-[#3A362F] rounded-lg px-3 py-2.5 text-center">
+                <p className="text-sm text-[var(--text-4)] bg-[var(--bg-0)] border border-[var(--border)] rounded-lg px-3 py-2.5 text-center">
                   A purchase is in progress on this listing.
                 </p>
               ) : acceptedOffer ? (
@@ -147,12 +147,12 @@ export default async function ListingPage({
                 </div>
               )}
 
-              <div className="border-t border-[#2B2822] mt-5 pt-5 flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full bg-[#2B2822] flex items-center justify-center text-sm font-semibold text-[#B8B1A3] shrink-0">
+              <div className="border-t border-[var(--bg-2)] mt-5 pt-5 flex items-center gap-3">
+                <div className="w-9 h-9 rounded-full bg-[var(--bg-2)] flex items-center justify-center text-sm font-semibold text-[var(--text-3)] shrink-0">
                   {(listing.seller.name || "S").charAt(0).toUpperCase()}
                 </div>
                 <div className="text-sm">
-                  <Link href={`/profile/${listing.seller.id}`} className="text-[#F0EBE1] hover:text-[#DD8A3E] transition-colors">
+                  <Link href={`/profile/${listing.seller.id}`} className="text-[var(--text-1)] hover:text-[var(--accent-fill)] transition-colors">
                     {listing.seller.name || "A seller"}
                   </Link>
                   <StarRating avg={sellerRatings.seller.avg} count={sellerRatings.seller.count} />

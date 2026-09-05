@@ -8,14 +8,21 @@ const sans = Inter({ subsets: ["latin"], variable: "--font-sans" });
 const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono" });
 
 export const metadata: Metadata = {
-  title: "Bench Exchange — buy and sell PC parts",
+  title: "Voltra — buy and sell PC parts",
   description: "A marketplace for PC parts and whole builds.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${sans.variable} ${mono.variable}`}>
-      <body className="bg-[#171512] text-[#F0EBE1] min-h-screen font-sans antialiased">
+    <html lang="en" className={`dark ${sans.variable} ${mono.variable}`}>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{if(localStorage.getItem('theme')==='light'){document.documentElement.classList.remove('dark')}}catch(e){}`,
+          }}
+        />
+      </head>
+      <body className="bg-[var(--bg-0)] text-[var(--text-1)] min-h-screen font-sans antialiased">
         <Providers>
           {children}
           <SiteFooter />

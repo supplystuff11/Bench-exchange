@@ -58,29 +58,29 @@ export function NotificationBell() {
       <button
         onClick={openBell}
         aria-label="Notifications"
-        className="relative text-sm text-[#B8B1A3] hover:text-[#F0EBE1] transition-colors"
+        className="relative text-sm text-[var(--text-3)] hover:text-[var(--text-1)] transition-colors"
       >
         🔔
         {unreadCount > 0 && (
-          <span className="absolute -top-1.5 -right-2 bg-[#C96450] text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">
+          <span className="absolute -top-1.5 -right-2 bg-[var(--danger-text)] text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">
             {unreadCount > 9 ? "9+" : unreadCount}
           </span>
         )}
       </button>
       {open && (
-        <div className="absolute right-0 mt-2 w-80 bg-[#211F1B] border border-[#3A362F] rounded-xl shadow-lg max-h-96 overflow-y-auto z-50">
+        <div className="absolute right-0 mt-2 w-80 bg-[var(--bg-1)] border border-[var(--border)] rounded-xl shadow-lg max-h-96 overflow-y-auto z-50">
           {notifications.length === 0 ? (
-            <p className="p-4 text-sm text-[#736C5F]">No notifications yet.</p>
+            <p className="p-4 text-sm text-[var(--text-4)]">No notifications yet.</p>
           ) : (
             notifications.map((n) => (
               <Link
                 key={n.id}
                 href={n.link || "#"}
-                className="block p-3 border-b border-[#2B2822] last:border-0 hover:bg-[#171512] transition-colors"
+                className="block p-3 border-b border-[var(--bg-2)] last:border-0 hover:bg-[var(--bg-0)] transition-colors"
                 onClick={() => setOpen(false)}
               >
                 <div className="text-sm font-medium">{n.title}</div>
-                {n.body && <div className="text-xs text-[#736C5F] mt-1">{n.body}</div>}
+                {n.body && <div className="text-xs text-[var(--text-4)] mt-1">{n.body}</div>}
               </Link>
             ))
           )}

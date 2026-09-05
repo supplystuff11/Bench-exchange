@@ -21,22 +21,22 @@ export function Sidebar({ searchParams }: { searchParams: SP }) {
   const itemClass = (isActive: boolean) =>
     `flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${
       isActive
-        ? "bg-[#2B2822] text-[#F0EBE1]"
-        : "text-[#B8B1A3] hover:bg-[#1C1A16] hover:text-[#F0EBE1]"
+        ? "bg-[var(--bg-2)] text-[var(--text-1)]"
+        : "text-[var(--text-3)] hover:bg-[var(--bg-3)] hover:text-[var(--text-1)]"
     }`;
 
   const inputClass =
-    "w-full bg-[#171512] border border-[#3A362F] rounded-md px-2 py-1.5 text-xs outline-none focus:border-[#DD8A3E] transition-colors";
+    "w-full bg-[var(--bg-0)] border border-[var(--border)] rounded-md px-2 py-1.5 text-xs outline-none focus:border-[var(--accent-fill)] transition-colors";
 
   return (
-    <aside className="w-60 shrink-0 border-r border-[#2B2822] px-3 py-6 hidden md:flex md:flex-col gap-6 overflow-y-auto">
+    <aside className="w-60 shrink-0 border-r border-[var(--bg-2)] px-3 py-6 hidden md:flex md:flex-col gap-6 overflow-y-auto">
       <div>
-        <div className="text-[11px] font-semibold uppercase tracking-wide text-[#736C5F] px-3 mb-3">
+        <div className="text-[11px] font-semibold uppercase tracking-wide text-[var(--text-4)] px-3 mb-3">
           Categories
         </div>
         <nav className="flex flex-col gap-0.5">
           <Link href={catHref("All")} className={itemClass(active === "All")}>
-            <span className="w-4 h-4 shrink-0 text-[#DD8A3E]">
+            <span className="w-4 h-4 shrink-0 text-[var(--accent-fill)]">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" className="w-full h-full">
                 <rect x="3.5" y="3.5" width="7" height="7" rx="1" />
                 <rect x="13.5" y="3.5" width="7" height="7" rx="1" />
@@ -48,7 +48,7 @@ export function Sidebar({ searchParams }: { searchParams: SP }) {
           </Link>
           {CATEGORIES.map((c) => (
             <Link key={c} href={catHref(c)} className={itemClass(active === c)}>
-              <span className={`w-4 h-4 shrink-0 ${active === c ? "text-[#DD8A3E]" : "text-[#736C5F]"}`}>
+              <span className={`w-4 h-4 shrink-0 ${active === c ? "text-[var(--accent-fill)]" : "text-[var(--text-4)]"}`}>
                 <CategoryIcon category={c} />
               </span>
               {c}
@@ -57,8 +57,8 @@ export function Sidebar({ searchParams }: { searchParams: SP }) {
         </nav>
       </div>
 
-      <div className="border-t border-[#2B2822] pt-5">
-        <div className="text-[11px] font-semibold uppercase tracking-wide text-[#736C5F] px-3 mb-3">
+      <div className="border-t border-[var(--bg-2)] pt-5">
+        <div className="text-[11px] font-semibold uppercase tracking-wide text-[var(--text-4)] px-3 mb-3">
           Filters
         </div>
         <form method="GET" action="/browse" className="px-3 flex flex-col gap-4">
@@ -68,7 +68,7 @@ export function Sidebar({ searchParams }: { searchParams: SP }) {
           )}
 
           <div>
-            <label className="text-xs text-[#B8B1A3] mb-1.5 block">Brand</label>
+            <label className="text-xs text-[var(--text-3)] mb-1.5 block">Brand</label>
             <select name="brand" defaultValue={(searchParams.brand as string) || ""} className={inputClass}>
               <option value="">All brands</option>
               {brandsForCategory(active).map((b) => (
@@ -80,7 +80,7 @@ export function Sidebar({ searchParams }: { searchParams: SP }) {
           </div>
 
           <div>
-            <label className="text-xs text-[#B8B1A3] mb-1.5 block">Price range</label>
+            <label className="text-xs text-[var(--text-3)] mb-1.5 block">Price range</label>
             <div className="flex items-center gap-2">
               <input
                 name="minPrice"
@@ -89,7 +89,7 @@ export function Sidebar({ searchParams }: { searchParams: SP }) {
                 defaultValue={searchParams.minPrice as string}
                 className={inputClass}
               />
-              <span className="text-[#736C5F] text-xs">–</span>
+              <span className="text-[var(--text-4)] text-xs">–</span>
               <input
                 name="maxPrice"
                 type="number"
@@ -101,16 +101,16 @@ export function Sidebar({ searchParams }: { searchParams: SP }) {
           </div>
 
           <div>
-            <label className="text-xs text-[#B8B1A3] mb-1.5 block">Condition</label>
+            <label className="text-xs text-[var(--text-3)] mb-1.5 block">Condition</label>
             <div className="flex flex-col gap-1.5">
               {CONDITIONS.map((c) => (
-                <label key={c} className="flex items-center gap-2 text-sm text-[#D9D3C7] cursor-pointer">
+                <label key={c} className="flex items-center gap-2 text-sm text-[var(--text-2)] cursor-pointer">
                   <input
                     type="checkbox"
                     name="condition"
                     value={c}
                     defaultChecked={selectedConditions.includes(c)}
-                    className="accent-[#DD8A3E]"
+                    className="accent-[var(--accent-fill)]"
                   />
                   {c}
                 </label>
@@ -120,13 +120,13 @@ export function Sidebar({ searchParams }: { searchParams: SP }) {
 
           <button
             type="submit"
-            className="bg-[#2B2822] hover:bg-[#332F28] text-sm font-medium px-3 py-2 rounded-md transition-colors"
+            className="bg-[var(--bg-2)] hover:bg-[var(--bg-2-hover)] text-sm font-medium px-3 py-2 rounded-md transition-colors"
           >
             Apply filters
           </button>
           <Link
             href={clearHref}
-            className="text-xs text-[#736C5F] hover:text-[#B8B1A3] text-center transition-colors"
+            className="text-xs text-[var(--text-4)] hover:text-[var(--text-3)] text-center transition-colors"
           >
             Clear filters
           </Link>

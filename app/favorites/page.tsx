@@ -23,37 +23,37 @@ export default async function FavoritesPage() {
     <div className="min-h-screen flex flex-col">
       <SiteHeader />
       <main className="flex-1 max-w-5xl w-full mx-auto px-5 py-10">
-        <h1 className="text-xl font-bold mb-6">Favorites</h1>
+        <h1 className="text-xl font-bold mb-6 text-[var(--text-1)]">Favorites</h1>
 
         {favorites.length === 0 ? (
-          <p className="text-sm text-[#736C5F]">Nothing saved yet — tap the heart on any listing.</p>
+          <p className="text-sm text-[var(--text-4)]">Nothing saved yet — tap the heart on any listing.</p>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {favorites.map((f) => (
               <Link
                 key={f.id}
                 href={`/listing/${f.listing.id}`}
-                className="group bg-[#211F1B] border border-[#3A362F] rounded-xl overflow-hidden hover:border-[#544E44] transition-colors relative"
+                className="group bg-[var(--bg-1)] border border-[var(--border)] rounded-xl overflow-hidden hover:border-[var(--border-strong)] transition-colors relative"
               >
                 <div className="absolute top-2.5 right-2.5 z-10 text-lg">
                   <FavoriteButton listingId={f.listing.id} initialFavorited={true} />
                 </div>
-                <div className="aspect-[4/3] bg-gradient-to-br from-[#2B2822] to-[#1C1A16] flex items-center justify-center">
+                <div className="aspect-[4/3] bg-gradient-to-br from-[var(--bg-2)] to-[var(--bg-3)] flex items-center justify-center">
                   {f.listing.imageUrls.length > 0 ? (
                     <img src={f.listing.imageUrls[0]} alt="" className="w-full h-full object-cover" />
                   ) : (
-                    <div className="w-12 h-12 text-[#4A4438]">
+                    <div className="w-12 h-12 text-[var(--text-5)]">
                       <CategoryIcon category={f.listing.category} />
                     </div>
                   )}
                 </div>
                 <div className="p-3.5">
-                  <div className="text-lg font-bold text-[#F0EBE1] mb-0.5">
+                  <div className="text-lg font-bold text-[var(--text-1)] mb-0.5">
                     ${(f.listing.priceCents / 100).toLocaleString()}
                   </div>
-                  <div className="text-sm text-[#D9D3C7] mb-1 truncate">{f.listing.title}</div>
+                  <div className="text-sm text-[var(--text-2)] mb-1 truncate">{f.listing.title}</div>
                   {f.listing.status !== "active" && (
-                    <div className="text-xs text-[#736C5F] uppercase">{f.listing.status}</div>
+                    <div className="text-xs text-[var(--text-4)] uppercase">{f.listing.status}</div>
                   )}
                 </div>
               </Link>

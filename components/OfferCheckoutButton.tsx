@@ -29,11 +29,11 @@ export default function OfferCheckoutButton({ offerId, amountCents }: { offerId:
       <button
         onClick={buy}
         disabled={loading}
-        className="w-full bg-[#4FBFB0] text-[#0F2925] font-semibold px-6 py-3 rounded-md hover:bg-[#5FD3C3] transition-colors disabled:opacity-60"
+        className="w-full bg-[var(--teal-fill)] text-[var(--teal-on)] font-semibold px-6 py-3 rounded-md hover:bg-[var(--teal-hover)] transition-colors disabled:opacity-60"
       >
         {loading ? "Redirecting to checkout..." : `Complete purchase at $${(amountCents / 100).toLocaleString()}`}
       </button>
-      {error && <p className="text-sm text-[#C96450] mt-3">{error}</p>}
+      {error && <p className="text-sm text-[var(--danger-text)] mt-3">{error}</p>}
     </div>
   );
 }

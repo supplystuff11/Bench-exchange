@@ -37,7 +37,7 @@ export default function ReportListingButton({ listingId }: { listingId: string }
     <>
       <button
         onClick={() => setOpen(true)}
-        className="text-xs text-[#736C5F] hover:text-[#C96450] transition-colors"
+        className="text-xs text-[var(--text-4)] hover:text-[var(--danger-text)] transition-colors"
       >
         Report this listing
       </button>
@@ -48,23 +48,23 @@ export default function ReportListingButton({ listingId }: { listingId: string }
           onClick={() => setOpen(false)}
         >
           <div
-            className="bg-[#211F1B] border border-[#3A362F] rounded-xl p-5 w-full max-w-sm"
+            className="bg-[var(--bg-1)] border border-[var(--border)] rounded-xl p-5 w-full max-w-sm"
             onClick={(e) => e.stopPropagation()}
           >
             {sent ? (
               <>
-                <h2 className="text-lg font-semibold mb-2">Report submitted</h2>
-                <p className="text-sm text-[#B8B1A3] mb-5">Thanks — we'll take a look.</p>
+                <h2 className="text-lg font-semibold mb-2 text-[var(--text-1)]">Report submitted</h2>
+                <p className="text-sm text-[var(--text-3)] mb-5">Thanks — we'll take a look.</p>
                 <button
                   onClick={() => setOpen(false)}
-                  className="w-full bg-[#2B2822] hover:bg-[#332F28] text-sm font-medium px-3 py-2 rounded-md transition-colors"
+                  className="w-full bg-[var(--bg-2)] hover:bg-[var(--bg-2-hover)] text-sm font-medium px-3 py-2 rounded-md transition-colors"
                 >
                   Close
                 </button>
               </>
             ) : (
               <>
-                <h2 className="text-lg font-semibold mb-4">Report this listing</h2>
+                <h2 className="text-lg font-semibold mb-4 text-[var(--text-1)]">Report this listing</h2>
                 <div className="flex flex-col gap-1.5 mb-3">
                   {REASONS.map((r) => (
                     <label key={r} className="flex items-center gap-2 text-sm cursor-pointer">
@@ -73,7 +73,7 @@ export default function ReportListingButton({ listingId }: { listingId: string }
                         name="reason"
                         checked={reason === r}
                         onChange={() => setReason(r)}
-                        className="accent-[#DD8A3E]"
+                        className="accent-[var(--accent-fill)]"
                       />
                       {r}
                     </label>
@@ -84,20 +84,20 @@ export default function ReportListingButton({ listingId }: { listingId: string }
                   onChange={(e) => setDetails(e.target.value)}
                   rows={3}
                   placeholder="Additional details (optional)"
-                  className="w-full bg-[#171512] border border-[#3A362F] rounded-md px-3 py-2 text-sm outline-none focus:border-[#DD8A3E] transition-colors mb-3"
+                  className="w-full bg-[var(--bg-0)] border border-[var(--border)] rounded-md px-3 py-2 text-sm outline-none focus:border-[var(--accent-fill)] transition-colors mb-3"
                 />
-                {error && <p className="text-sm text-[#C96450] mb-3">{error}</p>}
+                {error && <p className="text-sm text-[var(--danger-text)] mb-3">{error}</p>}
                 <div className="flex gap-2">
                   <button
                     onClick={() => setOpen(false)}
-                    className="flex-1 border border-[#3A362F] text-sm font-medium px-3 py-2 rounded-md hover:border-[#544E44] transition-colors"
+                    className="flex-1 border border-[var(--border)] text-sm font-medium px-3 py-2 rounded-md hover:border-[var(--border-strong)] transition-colors"
                   >
                     Cancel
                   </button>
                   <button
                     onClick={submit}
                     disabled={submitting}
-                    className="flex-1 bg-[#C96450] text-white font-semibold text-sm px-3 py-2 rounded-md hover:bg-[#DB7A65] transition-colors disabled:opacity-60"
+                    className="flex-1 bg-[var(--danger-text)] text-white font-semibold text-sm px-3 py-2 rounded-md hover:bg-[var(--danger-hover)] transition-colors disabled:opacity-60"
                   >
                     {submitting ? "Sending..." : "Submit report"}
                   </button>

@@ -1,4 +1,4 @@
-# Bench Exchange
+# Voltra
 
 A marketplace for buying and selling PC parts and whole builds, with a 5%
 platform fee taken automatically out of every sale via Stripe Connect.

@@ -60,14 +60,14 @@ export default function SavedSearchesPage() {
     <div className="min-h-screen flex flex-col">
       <SiteHeader />
       <main className="flex-1 max-w-2xl w-full mx-auto px-5 py-10">
-        <h1 className="text-xl font-bold mb-6">Saved searches</h1>
+        <h1 className="text-xl font-bold mb-6 text-[var(--text-1)]">Saved searches</h1>
 
         {loading ? (
-          <p className="text-sm text-[#736C5F]">Loading...</p>
+          <p className="text-sm text-[var(--text-4)]">Loading...</p>
         ) : searches.length === 0 ? (
-          <p className="text-sm text-[#736C5F]">
+          <p className="text-sm text-[var(--text-4)]">
             No saved searches yet — on the{" "}
-            <Link href="/browse" className="text-[#DD8A3E] hover:text-[#E9974F] transition-colors">
+            <Link href="/browse" className="text-[var(--accent-fill)] hover:text-[var(--accent-hover)] transition-colors">
               Browse page
             </Link>
             , filter for what you want and tap "Save this search."
@@ -77,14 +77,14 @@ export default function SavedSearchesPage() {
             {searches.map((s) => (
               <div
                 key={s.id}
-                className="flex items-center justify-between gap-3 bg-[#211F1B] border border-[#3A362F] rounded-xl p-3.5"
+                className="flex items-center justify-between gap-3 bg-[var(--bg-1)] border border-[var(--border)] rounded-xl p-3.5"
               >
-                <Link href={browseHref(s)} className="text-sm hover:text-[#DD8A3E] transition-colors">
+                <Link href={browseHref(s)} className="text-sm hover:text-[var(--accent-fill)] transition-colors">
                   {describe(s)}
                 </Link>
                 <button
                   onClick={() => remove(s.id)}
-                  className="text-xs text-[#C96450] hover:text-[#DB7A65] transition-colors shrink-0"
+                  className="text-xs text-[var(--danger-text)] hover:text-[var(--danger-hover)] transition-colors shrink-0"
                 >
                   Remove
                 </button>

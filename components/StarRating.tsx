@@ -3,12 +3,12 @@ export default function StarRating({ avg, count, label }: { avg: number; count: 
 
   return (
     <div className="flex items-center gap-1.5 text-sm">
-      {label && <span className="text-[#736C5F]">{label}</span>}
-      <span className="text-[#DD8A3E]">
+      {label && <span className="text-[var(--text-4)]">{label}</span>}
+      <span className="text-[var(--gold-fill)]">
         {"★".repeat(rounded)}
-        <span className="text-[#3A362F]">{"★".repeat(5 - rounded)}</span>
+        <span className="text-[var(--border)]">{"★".repeat(5 - rounded)}</span>
       </span>
-      <span className="text-[#736C5F] text-xs">
+      <span className="text-[var(--text-4)] text-xs">
         {count > 0 ? `${avg.toFixed(1)} (${count})` : "No ratings yet"}
       </span>
     </div>

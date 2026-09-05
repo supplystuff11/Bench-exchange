@@ -30,8 +30,8 @@ export default async function ConversationPage({ params }: { params: { id: strin
       <SiteHeader />
       <main className="flex-1 max-w-2xl w-full mx-auto px-5 py-8 flex flex-col">
         <div className="mb-4">
-          <p className="text-xs text-[#736C5F]">{conversation.listing.title}</p>
-          <h1 className="text-xl font-bold">{otherPerson.name || "User"}</h1>
+          <p className="text-xs text-[var(--text-4)]">{conversation.listing.title}</p>
+          <h1 className="text-xl font-bold text-[var(--text-1)]">{otherPerson.name || "User"}</h1>
         </div>
         <MessageThread conversationId={conversation.id} currentUserId={userId} />
       </main>

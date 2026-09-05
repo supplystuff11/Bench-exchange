@@ -57,8 +57,8 @@ export default function MediaUploader({
 
   return (
     <div>
-      <label className="text-xs font-medium text-[#B8B1A3] mb-1.5 block">Photos & videos</label>
-      <label className="flex items-center justify-center border border-dashed border-[#3A362F] rounded-lg py-6 text-sm text-[#736C5F] cursor-pointer hover:border-[#544E44] transition-colors">
+      <label className="text-xs font-medium text-[var(--text-3)] mb-1.5 block">Photos & videos</label>
+      <label className="flex items-center justify-center border border-dashed border-[var(--border)] rounded-lg py-6 text-sm text-[var(--text-4)] cursor-pointer hover:border-[var(--border-strong)] transition-colors">
         {uploading ? "Uploading..." : "Click to add photos or a video"}
         <input
           type="file"
@@ -69,12 +69,12 @@ export default function MediaUploader({
           disabled={uploading}
         />
       </label>
-      {error && <p className="text-sm text-[#C96450] mt-2">{error}</p>}
+      {error && <p className="text-sm text-[var(--danger-text)] mt-2">{error}</p>}
 
       {(images.length > 0 || videos.length > 0) && (
         <div className="grid grid-cols-4 gap-2 mt-3">
           {images.map((url) => (
-            <div key={url} className="relative aspect-square rounded-md overflow-hidden border border-[#3A362F]">
+            <div key={url} className="relative aspect-square rounded-md overflow-hidden border border-[var(--border)]">
               <img src={url} alt="" className="w-full h-full object-cover" />
               <button
                 type="button"
@@ -86,7 +86,7 @@ export default function MediaUploader({
             </div>
           ))}
           {videos.map((url) => (
-            <div key={url} className="relative aspect-square rounded-md overflow-hidden border border-[#3A362F] bg-black">
+            <div key={url} className="relative aspect-square rounded-md overflow-hidden border border-[var(--border)] bg-black">
               <video src={url} className="w-full h-full object-cover" muted />
               <button
                 type="button"

@@ -22,8 +22,8 @@ export default function ListingGallery({
 
   if (media.length === 0) {
     return (
-      <div className="aspect-[16/10] bg-gradient-to-br from-[#2B2822] to-[#1C1A16] rounded-xl border border-[#3A362F] flex items-center justify-center mb-6">
-        <div className="w-20 h-20 text-[#4A4438]">
+      <div className="aspect-[16/10] bg-gradient-to-br from-[var(--bg-2)] to-[var(--bg-3)] rounded-xl border border-[var(--border)] flex items-center justify-center mb-6">
+        <div className="w-20 h-20 text-[var(--text-5)]">
           <CategoryIcon category={category} />
         </div>
       </div>
@@ -34,7 +34,7 @@ export default function ListingGallery({
 
   return (
     <div className="mb-6">
-      <div className="aspect-[16/10] bg-black rounded-xl border border-[#3A362F] overflow-hidden flex items-center justify-center">
+      <div className="aspect-[16/10] bg-black rounded-xl border border-[var(--border)] overflow-hidden flex items-center justify-center">
         {current.type === "image" ? (
           <img src={current.url} alt="" className="w-full h-full object-contain" />
         ) : (
@@ -48,7 +48,7 @@ export default function ListingGallery({
               key={m.url}
               onClick={() => setActive(i)}
               className={`w-16 h-16 shrink-0 rounded-md overflow-hidden border ${
-                i === active ? "border-[#DD8A3E]" : "border-[#3A362F]"
+                i === active ? "border-[var(--accent-fill)]" : "border-[var(--border)]"
               }`}
             >
               {m.type === "image" ? (

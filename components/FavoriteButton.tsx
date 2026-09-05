@@ -38,7 +38,7 @@ export default function FavoriteButton({
       disabled={loading}
       aria-label={favorited ? "Remove from favorites" : "Save to favorites"}
       className={`leading-none hover:scale-110 transition-transform ${
-        favorited ? "text-[#C96450]" : "text-[#B8B1A3]"
+        favorited ? "text-[var(--danger-text)]" : "text-[var(--text-3)]"
       } ${className}`}
     >
       {favorited ? "♥" : "♡"}

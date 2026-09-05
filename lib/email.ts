@@ -3,7 +3,7 @@
 // locally without email configured (in-app notifications still get created).
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
-const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || "Bench Exchange <onboarding@resend.dev>";
+const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || "Voltra <onboarding@resend.dev>";
 
 export async function sendEmail(to: string | null | undefined, subject: string, html: string) {
   if (!RESEND_API_KEY || !to) return;

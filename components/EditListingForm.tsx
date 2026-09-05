@@ -73,11 +73,11 @@ export default function EditListingForm({ listing }: { listing: Listing }) {
   };
 
   const fieldClass =
-    "w-full bg-[#171512] border border-[#3A362F] rounded-lg px-3 py-2.5 text-sm outline-none focus:border-[#DD8A3E] transition-colors";
-  const labelClass = "text-xs font-medium text-[#B8B1A3] mb-1.5 block";
+    "w-full bg-[var(--bg-0)] border border-[var(--border)] rounded-lg px-3 py-2.5 text-sm outline-none focus:border-[var(--accent-fill)] transition-colors";
+  const labelClass = "text-xs font-medium text-[var(--text-3)] mb-1.5 block";
 
   return (
-    <div className="bg-[#211F1B] border border-[#3A362F] rounded-xl p-5">
+    <div className="bg-[var(--bg-1)] border border-[var(--border)] rounded-xl p-5">
       <div className="flex flex-col gap-4">
         <MediaUploader images={images} videos={videos} onChange={(i, v) => { setImages(i); setVideos(v); }} />
 
@@ -135,12 +135,12 @@ export default function EditListingForm({ listing }: { listing: Listing }) {
           <textarea className={fieldClass} rows={4} value={form.description} onChange={set("description")} />
         </div>
 
-        {error && <p className="text-sm text-[#C96450]">{error}</p>}
+        {error && <p className="text-sm text-[var(--danger-text)]">{error}</p>}
 
         <button
           onClick={submit}
           disabled={submitting}
-          className="bg-[#DD8A3E] text-[#1B1305] font-semibold px-4 py-3 rounded-lg hover:bg-[#E9974F] transition-colors disabled:opacity-60"
+          className="bg-[var(--accent-fill)] text-[var(--accent-on)] font-semibold px-4 py-3 rounded-lg hover:bg-[var(--accent-hover)] transition-colors disabled:opacity-60"
         >
           {submitting ? "Saving..." : "Save changes"}
         </button>

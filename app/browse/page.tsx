@@ -88,13 +88,13 @@ export default async function BrowsePage({ searchParams }: { searchParams: SP })
       <SiteHeader search={searchForm} />
 
       {/* Mobile category chips */}
-      <div className="md:hidden flex gap-2 overflow-x-auto px-4 py-3 border-b border-[#2B2822]">
+      <div className="md:hidden flex gap-2 overflow-x-auto px-4 py-3 border-b border-[var(--bg-2)]">
         <Link
           href={mobileCatHref("All")}
           className={`shrink-0 text-xs font-medium px-3 py-1.5 rounded-full border transition-colors ${
             activeCategory === "All"
-              ? "bg-[#DD8A3E] text-[#1B1305] border-[#DD8A3E]"
-              : "border-[#3A362F] text-[#B8B1A3]"
+              ? "bg-[var(--accent-fill)] text-[var(--accent-on)] border-[var(--accent-fill)]"
+              : "border-[var(--border)] text-[var(--text-3)]"
           }`}
         >
           All
@@ -105,8 +105,8 @@ export default async function BrowsePage({ searchParams }: { searchParams: SP })
             href={mobileCatHref(c)}
             className={`shrink-0 text-xs font-medium px-3 py-1.5 rounded-full border transition-colors ${
               activeCategory === c
-                ? "bg-[#DD8A3E] text-[#1B1305] border-[#DD8A3E]"
-                : "border-[#3A362F] text-[#B8B1A3]"
+                ? "bg-[var(--accent-fill)] text-[var(--accent-on)] border-[var(--accent-fill)]"
+                : "border-[var(--border)] text-[var(--text-3)]"
             }`}
           >
             {c}
@@ -119,7 +119,7 @@ export default async function BrowsePage({ searchParams }: { searchParams: SP })
 
         <main className="flex-1 px-4 sm:px-6 py-6 flex flex-col">
           <div className="flex items-baseline justify-between mb-5">
-            <h1 className="text-lg font-semibold">
+            <h1 className="text-lg font-semibold text-[var(--text-1)]">
               {activeCategory === "All" ? "All listings" : activeCategory}
             </h1>
             <div className="flex items-center gap-3">
@@ -132,7 +132,7 @@ export default async function BrowsePage({ searchParams }: { searchParams: SP })
                   maxPrice={maxPrice !== undefined ? Math.round(maxPrice * 100) : undefined}
                 />
               )}
-              <span className="text-sm text-[#736C5F]">
+              <span className="text-sm text-[var(--text-4)]">
                 {listings.length} listing{listings.length === 1 ? "" : "s"}
               </span>
             </div>
@@ -140,14 +140,14 @@ export default async function BrowsePage({ searchParams }: { searchParams: SP })
 
           {listings.length === 0 ? (
             <div className="flex-1 flex flex-col items-center justify-center text-center py-20">
-              <div className="w-14 h-14 rounded-xl bg-[#211F1B] border border-[#3A362F] flex items-center justify-center mb-4 text-[#736C5F]">
+              <div className="w-14 h-14 rounded-xl bg-[var(--bg-1)] border border-[var(--border)] flex items-center justify-center mb-4 text-[var(--text-4)]">
                 <CategoryIcon category={activeCategory} className="w-6 h-6" />
               </div>
-              <p className="text-[#B8B1A3] text-sm mb-1">No listings match your filters.</p>
-              <p className="text-[#736C5F] text-sm mb-6">Try widening your search, or list something yourself.</p>
+              <p className="text-[var(--text-3)] text-sm mb-1">No listings match your filters.</p>
+              <p className="text-[var(--text-4)] text-sm mb-6">Try widening your search, or list something yourself.</p>
               <Link
                 href="/sell"
-                className="bg-[#DD8A3E] text-[#1B1305] font-semibold px-4 py-2 rounded-lg text-sm hover:bg-[#E9974F] transition-colors"
+                className="bg-[var(--accent-fill)] text-[var(--accent-on)] font-semibold px-4 py-2 rounded-lg text-sm hover:bg-[var(--accent-hover)] transition-colors"
               >
                 Sell a part
               </Link>
@@ -158,36 +158,36 @@ export default async function BrowsePage({ searchParams }: { searchParams: SP })
                 <Link
                   key={l.id}
                   href={`/listing/${l.id}`}
-                  className="group bg-[#211F1B] border border-[#3A362F] rounded-xl overflow-hidden hover:border-[#544E44] hover:-translate-y-0.5 hover:shadow-[0_8px_20px_-8px_rgba(0,0,0,0.5)] transition-all relative"
+                  className="group bg-[var(--bg-1)] border border-[var(--border)] rounded-xl overflow-hidden hover:border-[var(--border-strong)] hover:-translate-y-0.5 hover:shadow-[0_8px_20px_-8px_rgba(0,0,0,0.5)] transition-all relative"
                 >
                   {userId && (
                     <div className="absolute top-2.5 right-2.5 z-10 text-lg">
                       <FavoriteButton listingId={l.id} initialFavorited={favoritedIds.has(l.id)} />
                     </div>
                   )}
-                  <div className="aspect-[4/3] bg-gradient-to-br from-[#2B2822] to-[#1C1A16] flex items-center justify-center relative">
+                  <div className="aspect-[4/3] bg-gradient-to-br from-[var(--bg-2)] to-[var(--bg-3)] flex items-center justify-center relative">
                     {l.imageUrls.length > 0 ? (
                       <img src={l.imageUrls[0]} alt="" className="w-full h-full object-cover" />
                     ) : (
-                      <div className="w-12 h-12 text-[#4A4438]">
+                      <div className="w-12 h-12 text-[var(--text-5)]">
                         <CategoryIcon category={l.category} />
                       </div>
                     )}
-                    <span className="absolute top-2.5 left-2.5 text-[10px] font-semibold uppercase tracking-wide bg-[#171512]/80 backdrop-blur text-[#B8B1A3] px-2 py-1 rounded-md">
+                    <span className="absolute top-2.5 left-2.5 text-[10px] font-semibold uppercase tracking-wide bg-[var(--bg-0)]/80 backdrop-blur text-[var(--text-3)] px-2 py-1 rounded-md">
                       {l.condition}
                     </span>
                     {l.featuredUntil && l.featuredUntil > now && (
-                      <span className="absolute bottom-2.5 left-2.5 text-[10px] font-semibold uppercase tracking-wide bg-[#DD8A3E] text-[#1B1305] px-2 py-1 rounded-md">
+                      <span className="absolute bottom-2.5 left-2.5 text-[10px] font-semibold uppercase tracking-wide bg-[var(--gold-fill)] text-[var(--gold-on)] px-2 py-1 rounded-md">
                         Featured
                       </span>
                     )}
                   </div>
                   <div className="p-3.5">
-                    <div className="text-lg font-bold text-[#F0EBE1] mb-0.5">
+                    <div className="text-lg font-bold text-[var(--text-1)] mb-0.5">
                       ${(l.priceCents / 100).toLocaleString()}
                     </div>
-                    <div className="text-sm text-[#D9D3C7] mb-1 truncate">{l.title}</div>
-                    <div className="flex items-center justify-between text-xs text-[#736C5F]">
+                    <div className="text-sm text-[var(--text-2)] mb-1 truncate">{l.title}</div>
+                    <div className="flex items-center justify-between text-xs text-[var(--text-4)]">
                       <span>{l.brand} · {l.category}</span>
                       {l.city && <span>{l.city}</span>}
                     </div>

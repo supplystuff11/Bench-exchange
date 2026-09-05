@@ -29,11 +29,11 @@ export default function BuyButton({ listingId }: { listingId: string }) {
       <button
         onClick={buy}
         disabled={loading}
-        className="w-full bg-[#DD8A3E] text-[#1B1305] font-semibold px-6 py-3 rounded-md hover:bg-[#E9974F] transition-colors disabled:opacity-60"
+        className="w-full bg-[var(--accent-fill)] text-[var(--accent-on)] font-semibold px-6 py-3 rounded-md hover:bg-[var(--accent-hover)] transition-colors disabled:opacity-60"
       >
         {loading ? "Redirecting to checkout..." : "Buy now"}
       </button>
-      {error && <p className="text-sm text-[#C96450] mt-3">{error}</p>}
+      {error && <p className="text-sm text-[var(--danger-text)] mt-3">{error}</p>}
     </div>
   );
 }

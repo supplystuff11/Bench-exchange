@@ -43,7 +43,7 @@ export default function ListingActions({
   };
 
   const btnClass =
-    "text-xs font-medium px-2 py-1 rounded-md border border-[#3A362F] text-[#B8B1A3] hover:border-[#544E44] hover:text-[#F0EBE1] transition-colors disabled:opacity-50";
+    "text-xs font-medium px-2 py-1 rounded-md border border-[var(--border)] text-[var(--text-3)] hover:border-[var(--border-strong)] hover:text-[var(--text-1)] transition-colors disabled:opacity-50";
 
   return (
     <div className="flex items-center gap-2 flex-wrap">

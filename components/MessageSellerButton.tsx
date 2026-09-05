@@ -27,7 +27,7 @@ export default function MessageSellerButton({ listingId }: { listingId: string }
     <button
       onClick={start}
       disabled={loading}
-      className="w-full bg-transparent border border-[#3A362F] text-[#F0EBE1] font-semibold px-6 py-3 rounded-md hover:border-[#544E44] transition-colors disabled:opacity-60"
+      className="w-full bg-transparent border border-[var(--border)] text-[var(--text-1)] font-semibold px-6 py-3 rounded-md hover:border-[var(--border-strong)] transition-colors disabled:opacity-60"
     >
       {loading ? "Opening..." : "Message seller"}
     </button>

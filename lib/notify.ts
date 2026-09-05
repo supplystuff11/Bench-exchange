@@ -33,6 +33,6 @@ export async function notify({ userId, type, title, body, link }: NotifyArgs) {
   await sendEmail(
     user?.email,
     title,
-    `<p>${body || title}</p><p><a href="${url}">View on Bench Exchange</a></p>`
+    `<p>${body || title}</p><p><a href="${url}">View on Voltra</a></p>`
   );
 }

@@ -33,24 +33,24 @@ export default async function OrdersPage() {
     <div className="min-h-screen flex flex-col">
       <SiteHeader />
       <main className="flex-1 max-w-3xl w-full mx-auto px-5 py-10">
-        <h1 className="text-xl font-bold mb-6">Orders</h1>
+        <h1 className="text-xl font-bold mb-6 text-[var(--text-1)]">Orders</h1>
 
         <section className="mb-10">
-          <h2 className="text-sm font-semibold text-[#736C5F] uppercase mb-3">Purchases</h2>
+          <h2 className="text-sm font-semibold text-[var(--text-4)] uppercase mb-3">Purchases</h2>
           {purchases.length === 0 ? (
-            <p className="text-sm text-[#736C5F]">No purchases yet.</p>
+            <p className="text-sm text-[var(--text-4)]">No purchases yet.</p>
           ) : (
             <div className="flex flex-col gap-3">
               {purchases.map((o) => {
                 const alreadyReviewed = o.reviews.some((r) => r.role === "SELLER");
                 return (
-                  <div key={o.id} className="border border-[#3A362F] rounded-xl p-4 bg-[#211F1B]">
-                    <Link href={`/listing/${o.listingId}`} className="font-semibold hover:text-[#DD8A3E] transition-colors">
+                  <div key={o.id} className="border border-[var(--border)] rounded-xl p-4 bg-[var(--bg-1)]">
+                    <Link href={`/listing/${o.listingId}`} className="font-semibold hover:text-[var(--accent-fill)] transition-colors">
                       {o.listing.title}
                     </Link>
-                    <p className="text-sm text-[#736C5F] mb-2">{money(o.amountCents)}</p>
+                    <p className="text-sm text-[var(--text-4)] mb-2">{money(o.amountCents)}</p>
                     {alreadyReviewed ? (
-                      <p className="text-xs text-[#6FCF97]">You reviewed the seller</p>
+                      <p className="text-xs text-[var(--success-text)]">You reviewed the seller</p>
                     ) : (
                       <ReviewForm orderId={o.id} role="SELLER" label="Rate the seller" />
                     )}
@@ -62,23 +62,23 @@ export default async function OrdersPage() {
         </section>
 
         <section>
-          <h2 className="text-sm font-semibold text-[#736C5F] uppercase mb-3">Sales</h2>
+          <h2 className="text-sm font-semibold text-[var(--text-4)] uppercase mb-3">Sales</h2>
           {sales.length === 0 ? (
-            <p className="text-sm text-[#736C5F]">No sales yet.</p>
+            <p className="text-sm text-[var(--text-4)]">No sales yet.</p>
           ) : (
             <div className="flex flex-col gap-3">
               {sales.map((o) => {
                 const alreadyReviewed = o.reviews.some((r) => r.role === "BUYER");
                 return (
-                  <div key={o.id} className="border border-[#3A362F] rounded-xl p-4 bg-[#211F1B]">
-                    <Link href={`/listing/${o.listingId}`} className="font-semibold hover:text-[#DD8A3E] transition-colors">
+                  <div key={o.id} className="border border-[var(--border)] rounded-xl p-4 bg-[var(--bg-1)]">
+                    <Link href={`/listing/${o.listingId}`} className="font-semibold hover:text-[var(--accent-fill)] transition-colors">
                       {o.listing.title}
                     </Link>
-                    <p className="text-sm text-[#736C5F] mb-2">
+                    <p className="text-sm text-[var(--text-4)] mb-2">
                       {money(o.amountCents)} · sold to {o.buyer.name || "a buyer"}
                     </p>
                     {alreadyReviewed ? (
-                      <p className="text-xs text-[#6FCF97]">You reviewed the buyer</p>
+                      <p className="text-xs text-[var(--success-text)]">You reviewed the buyer</p>
                     ) : (
                       <ReviewForm orderId={o.id} role="BUYER" label="Rate the buyer" />
                     )}

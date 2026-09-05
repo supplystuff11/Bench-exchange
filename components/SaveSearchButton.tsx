@@ -30,14 +30,14 @@ export default function SaveSearchButton({
   };
 
   if (saved) {
-    return <span className="text-xs text-[#6FCF97]">Saved — we'll notify you of new matches</span>;
+    return <span className="text-xs text-[var(--success-text)]">Saved — we'll notify you of new matches</span>;
   }
 
   return (
     <button
       onClick={save}
       disabled={loading}
-      className="text-xs text-[#4FBFB0] hover:text-[#5FD3C3] transition-colors disabled:opacity-60"
+      className="text-xs text-[var(--teal-fill)] hover:text-[var(--teal-hover)] transition-colors disabled:opacity-60"
     >
       {loading ? "Saving..." : "Save this search"}
     </button>

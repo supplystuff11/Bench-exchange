@@ -19,7 +19,7 @@ export default function RemoveListingButton({ listingId }: { listingId: string }
     <button
       onClick={remove}
       disabled={loading}
-      className="text-sm text-[#C96450] hover:text-[#DB7A65] transition-colors disabled:opacity-60"
+      className="text-sm text-[var(--danger-text)] hover:text-[var(--danger-hover)] transition-colors disabled:opacity-60"
     >
       {loading ? "Removing..." : "Remove"}
     </button>

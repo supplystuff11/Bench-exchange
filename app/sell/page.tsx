@@ -71,32 +71,32 @@ export default function SellPage() {
   };
 
   const fieldClass =
-    "w-full bg-[#171512] border border-[#3A362F] rounded-lg px-3 py-2.5 text-sm outline-none focus:border-[#DD8A3E] transition-colors";
-  const labelClass = "text-xs font-medium text-[#B8B1A3] mb-1.5 block";
+    "w-full bg-[var(--bg-0)] border border-[var(--border)] rounded-lg px-3 py-2.5 text-sm outline-none focus:border-[var(--accent-fill)] transition-colors";
+  const labelClass = "text-xs font-medium text-[var(--text-3)] mb-1.5 block";
 
   return (
     <div className="min-h-screen flex flex-col">
       <SiteHeader />
 
       <main className="flex-1 max-w-lg mx-auto w-full px-5 py-10">
-        <h1 className="text-xl font-bold mb-1.5">List an item</h1>
+        <h1 className="text-xl font-bold mb-1.5 text-[var(--text-1)]">List an item</h1>
         {stripeOnboarded ? (
-          <p className="text-sm text-[#6FCF97] mb-8">Payouts are set up — you're ready to sell.</p>
+          <p className="text-sm text-[var(--success-text)] mb-8">Payouts are set up — you're ready to sell.</p>
         ) : (
           <>
-            <p className="text-sm text-[#736C5F] mb-6">
+            <p className="text-sm text-[var(--text-4)] mb-6">
               Before your first sale, set up payouts so Stripe knows where to send your money.
             </p>
             <button
               onClick={startPayoutSetup}
-              className="text-sm text-[#4FBFB0] hover:text-[#5FD3C3] transition-colors mb-8 block"
+              className="text-sm text-[var(--teal-fill)] hover:text-[var(--teal-hover)] transition-colors mb-8 block"
             >
               Set up seller payouts →
             </button>
           </>
         )}
 
-        <div className="bg-[#211F1B] border border-[#3A362F] rounded-xl p-5">
+        <div className="bg-[var(--bg-1)] border border-[var(--border)] rounded-xl p-5">
           <div className="flex flex-col gap-4">
             <MediaUploader images={images} videos={videos} onChange={(i, v) => { setImages(i); setVideos(v); }} />
 
@@ -181,12 +181,12 @@ export default function SellPage() {
               />
             </div>
 
-            {error && <p className="text-sm text-[#C96450]">{error}</p>}
+            {error && <p className="text-sm text-[var(--danger-text)]">{error}</p>}
 
             <button
               onClick={submit}
               disabled={submitting}
-              className="bg-[#DD8A3E] text-[#1B1305] font-semibold px-4 py-3 rounded-lg hover:bg-[#E9974F] transition-colors disabled:opacity-60"
+              className="bg-[var(--accent-fill)] text-[var(--accent-on)] font-semibold px-4 py-3 rounded-lg hover:bg-[var(--accent-hover)] transition-colors disabled:opacity-60"
             >
               {submitting ? "Publishing..." : "Publish listing"}
             </button>

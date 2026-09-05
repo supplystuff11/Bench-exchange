@@ -42,10 +42,10 @@ export default function ReviewForm({
     router.refresh();
   };
 
-  if (done) return <p className="text-sm text-[#6FCF97]">Review submitted — thanks!</p>;
+  if (done) return <p className="text-sm text-[var(--success-text)]">Review submitted — thanks!</p>;
 
   return (
-    <div className="border border-[#3A362F] rounded-lg p-4 flex flex-col gap-3 bg-[#171512]">
+    <div className="border border-[var(--border)] rounded-lg p-4 flex flex-col gap-3 bg-[var(--bg-0)]">
       <p className="text-sm font-medium">{label}</p>
       <div className="flex gap-1 text-2xl">
         {[1, 2, 3, 4, 5].map((n) => (
@@ -54,7 +54,7 @@ export default function ReviewForm({
             onMouseEnter={() => setHover(n)}
             onMouseLeave={() => setHover(0)}
             onClick={() => setRating(n)}
-            className={n <= (hover || rating) ? "text-[#DD8A3E]" : "text-[#3A362F]"}
+            className={n <= (hover || rating) ? "text-[var(--gold-fill)]" : "text-[var(--border)]"}
           >
             ★
           </button>
@@ -65,13 +65,13 @@ export default function ReviewForm({
         rows={2}
         value={comment}
         onChange={(e) => setComment(e.target.value)}
-        className="bg-[#211F1B] border border-[#3A362F] rounded-md px-3 py-2 text-sm outline-none focus:border-[#DD8A3E] transition-colors"
+        className="bg-[var(--bg-1)] border border-[var(--border)] rounded-md px-3 py-2 text-sm outline-none focus:border-[var(--accent-fill)] transition-colors"
       />
-      {error && <p className="text-sm text-[#C96450]">{error}</p>}
+      {error && <p className="text-sm text-[var(--danger-text)]">{error}</p>}
       <button
         onClick={submit}
         disabled={submitting}
-        className="bg-[#DD8A3E] text-[#1B1305] font-semibold px-4 py-2 rounded-md text-sm hover:bg-[#E9974F] transition-colors disabled:opacity-60 self-start"
+        className="bg-[var(--accent-fill)] text-[var(--accent-on)] font-semibold px-4 py-2 rounded-md text-sm hover:bg-[var(--accent-hover)] transition-colors disabled:opacity-60 self-start"
       >
         {submitting ? "Submitting..." : "Submit review"}
       </button>
