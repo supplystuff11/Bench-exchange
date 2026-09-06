@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
@@ -31,7 +32,14 @@ export default async function ConversationPage({ params }: { params: { id: strin
       <main className="flex-1 max-w-2xl w-full mx-auto px-5 py-8 flex flex-col">
         <div className="mb-4">
           <p className="text-xs text-[var(--text-4)]">{conversation.listing.title}</p>
-          <h1 className="text-xl font-bold text-[var(--text-1)]">{otherPerson.name || "User"}</h1>
+          <Link href={`/profile/${otherPerson.id}`} className="text-xl font-bold text-[var(--text-1)] hover:text-[var(--accent-text)] transition-colors">
+            {otherPerson.name || "User"}
+          </Link>
+        </div>
+        <div className="bg-[var(--accent-soft-bg)] border border-[var(--accent-fill)]/30 rounded-lg px-3 py-2 mb-3 text-xs text-[var(--text-2)]">
+          Complete purchases through <strong>Buy Now</strong> or <strong>Make an Offer</strong> —
+          payments outside Voltra aren't protected and violate our{" "}
+          <a href="/terms" className="underline">Terms of Service</a>.
         </div>
         <MessageThread conversationId={conversation.id} currentUserId={userId} />
       </main>

@@ -10,6 +10,25 @@ type Message = {
   sender: { name: string | null };
 };
 
+// Loose pattern match for messages that look like they're proposing payment
+// outside the platform. Not meant to be airtight (nothing can be) — just a
+// speed bump so it's a deliberate choice, not an accidental slip.
+const OFF_PLATFORM_PATTERNS = [
+  /venmo/i,
+  /cash\s?app/i,
+  /paypal/i,
+  /zelle/i,
+  /apple\s?pay/i,
+  /wire transfer/i,
+  /pay(ing)?\s+(you\s+)?cash/i,
+  /cash\s+(only|in person|when)/i,
+  /\b\d{3}[-.\s]?\d{3}[-.\s]?\d{4}\b/, // phone number
+];
+
+function looksLikeOffPlatformPayment(text: string) {
+  return OFF_PLATFORM_PATTERNS.some((p) => p.test(text));
+}
+
 export default function MessageThread({
   conversationId,
   currentUserId,
@@ -41,6 +60,14 @@ export default function MessageThread({
 
   const send = async () => {
     if (!draft.trim()) return;
+
+    if (looksLikeOffPlatformPayment(draft)) {
+      const proceed = window.confirm(
+        "This message looks like it's proposing payment outside Voltra (Venmo, cash, a phone number, etc). Purchases made this way aren't protected and go against our Terms of Service.\n\nSend anyway?"
+      );
+      if (!proceed) return;
+    }
+
     setSending(true);
     const body = draft;
     setDraft("");

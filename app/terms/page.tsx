@@ -43,9 +43,12 @@ export default function TermsPage() {
           <h2 className="font-semibold text-[var(--text-1)] mb-2">4. Prohibited items and conduct</h2>
           <p>
             No stolen goods, counterfeit items, or anything illegal to sell in your jurisdiction.
-            No harassment, scams, or fraudulent listings. We may remove listings or suspend accounts
-            that violate these terms, using the reports submitted by other users as one signal among
-            others.
+            No harassment, scams, or fraudulent listings. Buyers and sellers must complete
+            transactions through Voltra's checkout — arranging payment outside the platform
+            (cash, Venmo, PayPal, etc.) to avoid platform fees is not permitted, and those
+            transactions carry no protection from us if something goes wrong. We may remove
+            listings or suspend accounts that violate these terms, using the reports submitted by
+            other users as one signal among others.
           </p>
         </section>
 

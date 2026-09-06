@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-const REASONS = ["Scam", "Fake or misleading listing", "Prohibited item", "Spam", "Other"];
+const REASONS = ["Scam", "Fake or misleading listing", "Prohibited item", "Trying to pay outside the app", "Spam", "Other"];
 
 export default function ReportListingButton({ listingId }: { listingId: string }) {
   const [open, setOpen] = useState(false);
