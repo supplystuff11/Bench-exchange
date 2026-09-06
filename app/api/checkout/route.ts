@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { stripe, platformFeeCents } from "@/lib/stripe";
+import { getShippingRate } from "@/lib/shippo";
 
 // POST /api/checkout  { listingId, offerId? }
 // Creates a Stripe Checkout Session. The payment goes to the buyer's card,
@@ -17,7 +18,7 @@ export async function POST(req: NextRequest) {
   }
   const userId = (session.user as any).id;
 
-  const { listingId, offerId } = await req.json();
+  const { listingId, offerId, ship, toZip } = await req.json();
 
   let offer = null as Awaited<ReturnType<typeof prisma.offer.findUnique>> | null;
   let offerPriceCents: number | undefined;
@@ -48,23 +49,69 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "You can't buy your own listing" }, { status: 400 });
   }
 
-  const priceCents = offerPriceCents ?? listing.priceCents;
-  const fee = platformFeeCents(priceCents);
+  // Shipping only applies to a listing (not to a pre-negotiated offer amount)
+  // and only if the seller enabled it. We never trust a price sent from the
+  // browser — the rate is looked up again here, server-side, right before
+  // charging, using the ZIP the buyer entered.
+  const wantsShipping = !!ship && listing.shipsAvailable;
+  let shippingCents = 0;
+
+  if (wantsShipping) {
+    if (!toZip || !/^\d{5}$/.test(toZip)) {
+      return NextResponse.json({ error: "A valid ZIP code is required for shipping" }, { status: 400 });
+    }
+    if (!listing.shipFromZip || !listing.weightLbs) {
+      return NextResponse.json({ error: "This listing isn't fully set up for shipping" }, { status: 400 });
+    }
+    const rate = await getShippingRate({
+      fromZip: listing.shipFromZip,
+      toZip,
+      weightLbs: listing.weightLbs,
+      packageSize: listing.packageSize || "medium",
+    });
+    if (!rate) {
+      return NextResponse.json(
+        { error: "Couldn't get a shipping rate right now — try again in a moment" },
+        { status: 502 }
+      );
+    }
+    shippingCents = rate.cents;
+  }
+
+  const itemPriceCents = offerPriceCents ?? listing.priceCents;
+  const totalCents = itemPriceCents + shippingCents;
+  // Platform fee is calculated on the full charge — item plus shipping —
+  // since shipping is paid through Stripe like everything else, not handed
+  // to the seller outside the app.
+  const fee = platformFeeCents(totalCents);
   const origin = process.env.NEXTAUTH_URL || "http://localhost:3000";
+
+  const lineItems = [
+    {
+      price_data: {
+        currency: "usd",
+        product_data: { name: listing.title },
+        unit_amount: itemPriceCents,
+      },
+      quantity: 1,
+    },
+  ];
+  if (shippingCents > 0) {
+    lineItems.push({
+      price_data: {
+        currency: "usd",
+        product_data: { name: "Shipping" },
+        unit_amount: shippingCents,
+      },
+      quantity: 1,
+    });
+  }
 
   const checkoutSession = await stripe.checkout.sessions.create({
     mode: "payment",
     payment_method_types: ["card"],
-    line_items: [
-      {
-        price_data: {
-          currency: "usd",
-          product_data: { name: listing.title },
-          unit_amount: priceCents,
-        },
-        quantity: 1,
-      },
-    ],
+    line_items: lineItems,
+    ...(wantsShipping ? { shipping_address_collection: { allowed_countries: ["US"] } } : {}),
     payment_intent_data: {
       application_fee_amount: fee,
       transfer_data: { destination: listing.seller.stripeAccountId },
@@ -89,7 +136,8 @@ export async function POST(req: NextRequest) {
       data: {
         listingId: listing.id,
         buyerId: userId,
-        amountCents: priceCents,
+        amountCents: totalCents,
+        shippingCents,
         platformFeeCents: fee,
         stripeSessionId: checkoutSession.id,
         status: "pending",

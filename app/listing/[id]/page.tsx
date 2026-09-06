@@ -110,8 +110,11 @@ export default async function ListingPage({
                 ${(listing.priceCents / 100).toLocaleString()}
               </div>
               {listing.city && (
-                <div className="text-sm text-[var(--text-4)] mb-5">{listing.city}</div>
+                <div className="text-sm text-[var(--text-4)] mb-1">{listing.city}</div>
               )}
+              <div className="text-xs text-[var(--text-4)] mb-5">
+                {listing.shipsAvailable ? "Local pickup or shipping available" : "Local pickup only"}
+              </div>
 
               {isOwner ? (
                 <div className="text-sm text-[var(--text-4)] bg-[var(--bg-0)] border border-[var(--border)] rounded-lg px-3 py-3 text-center">
@@ -135,7 +138,7 @@ export default async function ListingPage({
                 <OfferCheckoutButton offerId={acceptedOffer.id} amountCents={acceptedOffer.amountCents} />
               ) : (
                 <div className="flex flex-col gap-2">
-                  <BuyButton listingId={listing.id} />
+                  <BuyButton listingId={listing.id} shipsAvailable={listing.shipsAvailable} />
                   <MakeOfferButton listingId={listing.id} askingPriceCents={listing.priceCents} />
                   <MessageSellerButton listingId={listing.id} />
                 </div>

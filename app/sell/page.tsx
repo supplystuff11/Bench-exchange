@@ -25,6 +25,10 @@ export default function SellPage() {
     specs: "",
     description: "",
   });
+  const [canShip, setCanShip] = useState(false);
+  const [shipFromZip, setShipFromZip] = useState("");
+  const [weightLbs, setWeightLbs] = useState("");
+  const [packageSize, setPackageSize] = useState("medium");
   const [images, setImages] = useState<string[]>([]);
   const [videos, setVideos] = useState<string[]>([]);
   const [error, setError] = useState("");
@@ -51,12 +55,21 @@ export default function SellPage() {
       return;
     }
     setSubmitting(true);
+    if (canShip && (!/^\d{5}$/.test(shipFromZip) || !weightLbs)) {
+      setError("Enter a valid ZIP code and package weight for shipping.");
+      setSubmitting(false);
+      return;
+    }
     const res = await fetch("/api/listings", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         ...form,
         priceCents: Math.round(Number(form.price) * 100),
+        shipsAvailable: canShip,
+        shipFromZip: canShip ? shipFromZip : null,
+        weightLbs: canShip ? Number(weightLbs) : null,
+        packageSize: canShip ? packageSize : null,
         imageUrls: images,
         videoUrls: videos,
       }),
@@ -158,6 +171,49 @@ export default function SellPage() {
                   onChange={set("city")}
                 />
               </div>
+            </div>
+
+            <div>
+              <label className="flex items-center gap-2 text-sm mb-2">
+                <input
+                  type="checkbox"
+                  checked={canShip}
+                  onChange={(e) => setCanShip(e.target.checked)}
+                  className="accent-[var(--accent-fill)]"
+                />
+                This item can be shipped
+              </label>
+              {canShip && (
+                <div className="flex flex-col gap-2 mt-1">
+                  <input
+                    className={fieldClass}
+                    placeholder="Ship-from ZIP code"
+                    value={shipFromZip}
+                    onChange={(e) => setShipFromZip(e.target.value.replace(/\D/g, "").slice(0, 5))}
+                  />
+                  <input
+                    className={fieldClass}
+                    type="number"
+                    step="0.1"
+                    placeholder="Package weight (lbs)"
+                    value={weightLbs}
+                    onChange={(e) => setWeightLbs(e.target.value)}
+                  />
+                  <select
+                    className={fieldClass}
+                    value={packageSize}
+                    onChange={(e) => setPackageSize(e.target.value)}
+                  >
+                    <option value="small">Small box (RAM, small parts)</option>
+                    <option value="medium">Medium box (GPU, motherboard)</option>
+                    <option value="large">Large box (full build, case)</option>
+                  </select>
+                  <p className="text-xs text-[var(--text-4)]">
+                    Buyers get a real, live shipping quote at checkout based on their ZIP and this
+                    weight/size — you don't set a shipping price yourself.
+                  </p>
+                </div>
+              )}
             </div>
 
             <div>

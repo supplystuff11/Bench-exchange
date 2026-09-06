@@ -48,9 +48,16 @@ export async function POST(req: NextRequest) {
 
     const listingId = checkoutSession.metadata?.listingId;
 
+    // Stripe only returns shipping_details when the session was created with
+    // shipping_address_collection turned on (i.e. the buyer chose shipping).
+    const shipping = (checkoutSession as any).shipping_details;
+    const shippingAddress = shipping
+      ? JSON.stringify({ name: shipping.name, address: shipping.address })
+      : null;
+
     await prisma.order.updateMany({
       where: { stripeSessionId: checkoutSession.id },
-      data: { status: "paid" },
+      data: { status: "paid", ...(shippingAddress ? { shippingAddress } : {}) },
     });
 
     if (listingId) {

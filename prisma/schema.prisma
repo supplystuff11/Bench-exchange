@@ -91,6 +91,13 @@ model Listing {
   videoUrls   String[] @default([])
   // when set and in the future, the listing is boosted to the top of browse
   featuredUntil DateTime?
+  // shipping: kept for backward compatibility with the old flat-rate model,
+  // but real listings now use the fields below for live rate calculation
+  shippingCents Int?
+  shipsAvailable Boolean @default(false)
+  shipFromZip    String?
+  weightLbs      Float?
+  packageSize    String? // "small" | "medium" | "large"
 
   sellerId String
   seller   User    @relation(fields: [sellerId], references: [id])
@@ -124,6 +131,9 @@ model Order {
   buyer             User     @relation("BuyerOrders", fields: [buyerId], references: [id])
 
   amountCents       Int
+  // how much of amountCents was the shipping fee (0 if picked up locally)
+  shippingCents     Int      @default(0)
+  shippingAddress   String?  @db.Text
   platformFeeCents  Int
   stripeSessionId   String?  @unique
   status            String   @default("pending") // pending | paid | released | refunded

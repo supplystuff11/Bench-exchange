@@ -15,6 +15,10 @@ type Listing = {
   brand: string;
   condition: string;
   priceCents: number;
+  shipsAvailable: boolean;
+  shipFromZip: string | null;
+  weightLbs: number | null;
+  packageSize: string | null;
   city: string | null;
   specs: string | null;
   description: string;
@@ -34,6 +38,10 @@ export default function EditListingForm({ listing }: { listing: Listing }) {
     specs: listing.specs ?? "",
     description: listing.description,
   });
+  const [canShip, setCanShip] = useState(listing.shipsAvailable);
+  const [shipFromZip, setShipFromZip] = useState(listing.shipFromZip ?? "");
+  const [weightLbs, setWeightLbs] = useState(listing.weightLbs != null ? String(listing.weightLbs) : "");
+  const [packageSize, setPackageSize] = useState(listing.packageSize ?? "medium");
   const [images, setImages] = useState<string[]>(listing.imageUrls ?? []);
   const [videos, setVideos] = useState<string[]>(listing.videoUrls ?? []);
   const [error, setError] = useState("");
@@ -52,6 +60,10 @@ export default function EditListingForm({ listing }: { listing: Listing }) {
       setError("Fill in a title, price, and description.");
       return;
     }
+    if (canShip && (!/^\d{5}$/.test(shipFromZip) || !weightLbs)) {
+      setError("Enter a valid ZIP code and package weight for shipping.");
+      return;
+    }
     setSubmitting(true);
     const res = await fetch(`/api/listings/${listing.id}`, {
       method: "PATCH",
@@ -59,6 +71,10 @@ export default function EditListingForm({ listing }: { listing: Listing }) {
       body: JSON.stringify({
         ...form,
         priceCents: Math.round(Number(form.price) * 100),
+        shipsAvailable: canShip,
+        shipFromZip: canShip ? shipFromZip : null,
+        weightLbs: canShip ? Number(weightLbs) : null,
+        packageSize: canShip ? packageSize : null,
         imageUrls: images,
         videoUrls: videos,
       }),
@@ -123,6 +139,45 @@ export default function EditListingForm({ listing }: { listing: Listing }) {
             <label className={labelClass}>City</label>
             <input className={fieldClass} value={form.city} onChange={set("city")} />
           </div>
+        </div>
+
+        <div>
+          <label className="flex items-center gap-2 text-sm mb-2">
+            <input
+              type="checkbox"
+              checked={canShip}
+              onChange={(e) => setCanShip(e.target.checked)}
+              className="accent-[var(--accent-fill)]"
+            />
+            This item can be shipped
+          </label>
+          {canShip && (
+            <div className="flex flex-col gap-2 mt-1">
+              <input
+                className={fieldClass}
+                placeholder="Ship-from ZIP code"
+                value={shipFromZip}
+                onChange={(e) => setShipFromZip(e.target.value.replace(/\D/g, "").slice(0, 5))}
+              />
+              <input
+                className={fieldClass}
+                type="number"
+                step="0.1"
+                placeholder="Package weight (lbs)"
+                value={weightLbs}
+                onChange={(e) => setWeightLbs(e.target.value)}
+              />
+              <select
+                className={fieldClass}
+                value={packageSize}
+                onChange={(e) => setPackageSize(e.target.value)}
+              >
+                <option value="small">Small box (RAM, small parts)</option>
+                <option value="medium">Medium box (GPU, motherboard)</option>
+                <option value="large">Large box (full build, case)</option>
+              </select>
+            </div>
+          )}
         </div>
 
         <div>

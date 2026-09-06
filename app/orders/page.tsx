@@ -76,7 +76,29 @@ export default async function OrdersPage() {
                     </Link>
                     <p className="text-sm text-[var(--text-4)] mb-2">
                       {money(o.amountCents)} · sold to {o.buyer.name || "a buyer"}
+                      {o.shippingCents > 0
+                        ? ` (includes $${(o.shippingCents / 100).toFixed(2)} shipping)`
+                        : ""}
                     </p>
+                    {o.shippingAddress &&
+                      (() => {
+                        try {
+                          const s = JSON.parse(o.shippingAddress);
+                          const a = s.address || {};
+                          return (
+                            <p className="text-sm text-[var(--text-3)] mb-2 bg-[var(--bg-2)] rounded-md px-3 py-2">
+                              Ship to: {s.name}
+                              <br />
+                              {a.line1}
+                              {a.line2 ? `, ${a.line2}` : ""}
+                              <br />
+                              {a.city}, {a.state} {a.postal_code}
+                            </p>
+                          );
+                        } catch {
+                          return null;
+                        }
+                      })()}
                     {alreadyReviewed ? (
                       <p className="text-xs text-[var(--success-text)]">You reviewed the buyer</p>
                     ) : (

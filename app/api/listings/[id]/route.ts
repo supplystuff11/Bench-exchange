@@ -23,7 +23,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
   }
 
   const body = await req.json();
-  const { title, category, brand, condition, priceCents, city, specs, description, imageUrls, videoUrls } = body;
+  const { title, category, brand, condition, priceCents, shipsAvailable, shipFromZip, weightLbs, packageSize, city, specs, description, imageUrls, videoUrls } = body;
 
   if (!title || !category || !condition || !priceCents || !description) {
     return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
@@ -40,6 +40,10 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
       brand: brand || "Other",
       condition,
       priceCents,
+      shipsAvailable: !!shipsAvailable,
+      shipFromZip: shipsAvailable ? shipFromZip : null,
+      weightLbs: shipsAvailable && typeof weightLbs === "number" ? weightLbs : null,
+      packageSize: shipsAvailable ? packageSize : null,
       city,
       specs,
       description,
